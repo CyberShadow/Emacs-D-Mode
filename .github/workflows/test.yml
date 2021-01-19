@@ -26,4 +26,4 @@ jobs:
     - name: Test
       run: |
         cask install
-        COVERALLS_PARALLEL=1 make test
+        COVERALLS_PARALLEL=1 COVERALLS_REPO_TOKEN=f3VyR3js03R8zyeA32NWscNBNTR7OYR5k make test
