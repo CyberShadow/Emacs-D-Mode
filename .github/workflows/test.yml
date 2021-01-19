@@ -6,13 +6,13 @@ jobs:
     strategy:
       matrix:
         emacs:
-          - 25.1
-          - 25.2
-          - 25.3
-          - 26.1
-          - 26.2
+          # - 25.1
+          # - 25.2
+          # - 25.3
+          # - 26.1
+          # - 26.2
           - 26.3
-          - snapshot
+          # - snapshot
     steps:
       - name: Checkout
         uses: actions/checkout@v2
