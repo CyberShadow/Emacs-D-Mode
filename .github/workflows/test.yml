@@ -2,33 +2,30 @@ name: Test
 on: [ push, pull_request ]
 jobs:
   test:
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
-        emacs:
-          # - 25.1
-          # - 25.2
-          # - 25.3
-          # - 26.1
-          # - 26.2
-          - 26.3
-          # - snapshot
+        emacs_version:
+        # - 25.1
+        # - 25.2
+        # - 25.3
+        # - 26.1
+        # - 26.2
+        - 26.3
+        # - snapshot
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Test
-        env:
-          EMACS_VERSION: ${{ matrix.emacs }}
-        run: |
-          # Configure $PATH: Executables are installed to $HOME/bin
-          export PATH="$HOME/bin:$PATH"
-          # Download the makefile to emacs-travis.mk
-          wget 'https://raw.githubusercontent.com/CyberShadow/emacs-travis/patch-1/emacs-travis.mk'
-          # Install Emacs (according to $EMACS_VERSION) and Cask
-          make -f emacs-travis.mk install_emacs
-          make -f emacs-travis.mk install_cask
-          emacs --version
-          # Install dependencies
-          cask install
-          # Run tests and upload coverage
-          COVERALLS_PARALLEL=1 make test
+    - uses: purcell/setup-emacs@master
+      with:
+        version: ${{ matrix.emacs_version }}
+    - uses: conao3/setup-cask@master
+    - uses: actions/checkout@v2
+    - name: Test
+      run: |
+        # Install Emacs (according to $EMACS_VERSION) and Cask
+        make -f emacs-travis.mk install_emacs
+        make -f emacs-travis.mk install_cask
+        emacs --version
+        # Install dependencies
+        cask install
+        # Run tests and upload coverage
+        COVERALLS_PARALLEL=1 make test
