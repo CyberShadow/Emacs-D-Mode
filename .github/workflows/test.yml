@@ -1,8 +1,5 @@
 name: Test
 on: [ push, pull_request ]
-env:
-  COVERALLS_PARALLEL: 1
-  COVERALLS_REPO_TOKEN: f3VyR3js03R8zyeA32NWscNBNTR7OYR5k
 jobs:
   test:
     runs-on: ubuntu-20.04
@@ -24,6 +21,10 @@ jobs:
     - uses: conao3/setup-cask@master
     - uses: actions/checkout@v2
     - name: Test
+      env:
+        COVERALLS_FLAG_NAME: Emacs ${{ matrix.emacs_version }}
+        COVERALLS_PARALLEL: 1
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         cask install
         make test
@@ -32,4 +33,4 @@ jobs:
     if: always()
     needs: test
     steps:
-    - run: curl "https://coveralls.io/webhook?repo_token=$COVERALLS_REPO_TOKEN" -d "payload[build_num]=$GITHUB_RUN_ID&payload[status]=done"
+    - run: curl "https://coveralls.io/webhook?repo_name=$GITHUB_REPOSITORY&repo_token=${{ secrets.GITHUB_TOKEN }}" -d "payload[build_num]=$GITHUB_RUN_NUMBER&payload[status]=done"

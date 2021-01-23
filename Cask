@@ -3,4 +3,5 @@
 
 (development
  (depends-on "undercover"
-	     :git "https://github.com/undercover-el/undercover.el"))
+	     :git "https://github.com/undercover-el/undercover.el"
+             :branch "next"))
